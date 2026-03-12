@@ -9,5 +9,162 @@ generator client {
 }
 
 datasource db {
-  provider = provess.env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountType {
+  DEBIT
+  CREDIT
+  CASH
+  SAVINGS
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+enum RecurringInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String
+  name     String?
+
+  accounts    Account[]
+  categories  Category[]
+  savingGoals SavingGoal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Budget    Budget[]
+
+  @@map("users")
+}
+
+model Account {
+  id       String      @id @default(uuid())
+  name     String
+  type     AccountType
+  currency String      @default("COP")
+  color    String?
+  icon     String?
+
+  balance Float @default(0)
+
+  creditLimit    Float?
+  currentDebt    Float? @default(0)
+  cutoffDate     Int?
+  paymentDueDay  Int?
+  interestRate   Float?
+  minimumPayment Float?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions Transaction[]
+  savingsGoals SavingGoal[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("accounts")
+}
+
+model Category {
+  id          String          @id @default(uuid())
+  name        String
+  icon        String?
+  color       String?
+  type        TransactionType
+  budgetAmout Float?
+
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Transaction Transaction[]
+  Budget      Budget[]
+
+  @@unique([name, userId])
+  @@map("categories")
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  amount      Float
+  description String
+  type        TransactionType
+  date        DateTime        @default(now())
+  notes       String?
+
+  isRecurring       Boolean            @default(false)
+  recurringInterval RecurringInterval?
+  nextRecurrence    DateTime?
+
+  transferToAccountId String?
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  userId String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([userId, date])
+  @@index([accountId])
+  @@index([categoryId])
+  @@map("transactions")
+}
+
+model Budget {
+  id     String @id @default(uuid())
+  month  String
+  amount Float
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([categoryId, month, userId])
+  @@map("budgets")
+}
+
+model SavingGoal {
+  id            String   @id @default(uuid())
+  name          String
+  targetAmount  Float
+  currentAmount Float    @default(0)
+  deadline      DateTime
+  icon          String?
+  color         String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  linkedAccountId String?
+  linkedAccount   Account? @relation(fields: [linkedAccountId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("saving_goals")
 }
