@@ -5,9 +5,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { HealthResolver } from './health/health.resolver';
 import { PrismaModule } from '../prisma/prisma.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AuthModule } from './auth/auth.module';
-
 
 @Module({
   imports: [
