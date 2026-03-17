@@ -85,7 +85,7 @@ model Category {
   icon        String?
   color       String?
   type        TransactionType
-  budgetAmout Float?
+  budgetAmount Float?
 
   userId      String
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
