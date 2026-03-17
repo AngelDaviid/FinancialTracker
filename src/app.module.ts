@@ -6,7 +6,10 @@ import { join } from 'path';
 import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './category/categories.module';
+<<<<<<< feat/create-module-accounts
 import { AccountsModule } from './accounts/accounts.module';
+=======
+>>>>>>> dev
 
 @Module({
   imports: [
@@ -26,7 +29,10 @@ import { AccountsModule } from './accounts/accounts.module';
     PrismaModule,
     AuthModule,
     CategoriesModule,
+<<<<<<< feat/create-module-accounts
     AccountsModule
+=======
+>>>>>>> dev
   ],
   providers: [],
 })
