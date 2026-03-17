@@ -18,5 +18,6 @@ const QueryHandlers = [GetAccountsHandler, GetAccountHandler];
 @Module({
   imports: [CqrsModule],
   providers: [AccountsResolver, ...CommandHandlers, ...QueryHandlers],
+  exports: [CqrsModule],
 })
 export class AccountsModule {}

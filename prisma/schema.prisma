@@ -61,7 +61,7 @@ model Account {
 
   creditLimit    Float?
   currentDebt    Float? @default(0)
-  cutoffDate     Int?
+  cutoffDay     Int?
   paymentDueDay  Int?
   interestRate   Float?
   minimumPayment Float?

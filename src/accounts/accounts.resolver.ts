@@ -33,7 +33,7 @@ export class AccountsResolver {
     return this.queryBus.execute(new GetAccountsQuery(user.id));
   }
 
-  @Query(() => [AccountModel])
+  @Query(() => AccountModel)
   account(
     @Args('id', { type: () => ID }) id: string,
     @CurrentUser() user: { id: string },
