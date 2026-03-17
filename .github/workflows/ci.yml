@@ -58,3 +58,9 @@ jobs:
           DATABASE_URL: postgresql://finance:finance123@localhost:5432/financedb
           JWT_SECRET: ci-secret-for-testing
           JWT_EXPIRES_IN: 7d
+      - name: Lint
+        run: pnpm run lint
+        env:
+          DATABASE_URL: postgresql://finance:finance123@localhost:5432/financedb
+          JWT_SECRET: ci-secret-for-testing
+          JWT_EXPIRES_IN: 7d
