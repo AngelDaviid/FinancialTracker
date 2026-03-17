@@ -94,6 +94,9 @@ model Category {
 
   @@unique([name, userId])
   @@map("categories")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Transaction {

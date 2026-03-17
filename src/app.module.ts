@@ -4,11 +4,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { PrismaModule } from '../prisma/prisma.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './category/categories.module';
-import { AccountsModule } from './accounts/accounts.module';
-
 
 @Module({
   imports: [
@@ -28,7 +25,6 @@ import { AccountsModule } from './accounts/accounts.module';
     PrismaModule,
     AuthModule,
     CategoriesModule,
-    AccountsModule,
   ],
   providers: [],
 })
