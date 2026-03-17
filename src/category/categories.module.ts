@@ -5,6 +5,7 @@ import { CreateCategoryHandler } from './commands/crate-category';
 import { GetCategoriesHandler } from './queries/get-categories';
 import { GetCategoryHandler } from './queries/get-category';
 import { UpdateCategoryHandler } from './commands/update-category';
+import { DeleteCategoryHandler } from './commands/delete-category';
 
 @Module({
   imports: [CqrsModule],
@@ -12,6 +13,7 @@ import { UpdateCategoryHandler } from './commands/update-category';
     CategoriesResolver,
     CreateCategoryHandler,
     UpdateCategoryHandler,
+    DeleteCategoryHandler,
     GetCategoriesHandler,
     GetCategoryHandler,
   ],

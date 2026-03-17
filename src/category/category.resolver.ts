@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CategoryModel } from './models/category.model';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -10,6 +10,7 @@ import { CreateCategoryCommand } from './commands/crate-category/create-category
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { UpdateCategoryCommand } from './commands/update-category/update-category.command';
 import { DeleteCategoryCommand } from './commands/delete-category/delete-category.command';
+import { GetCategoryQuery } from './queries/get-category/get-category.query';
 
 @Resolver(() => CategoryModel)
 @UseGuards(JwtAuthGuard)
@@ -25,8 +26,11 @@ export class CategoriesResolver {
   }
 
   @Query(() => CategoryModel)
-  category(@Args('id') id: string) {
-    return this.queryBus.execute(new GetCategoriesQuery(id));
+  category(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    return this.queryBus.execute(new GetCategoryQuery(id, user.id));
   }
 
   @Mutation(() => CategoryModel)
@@ -40,7 +44,7 @@ export class CategoriesResolver {
   @Mutation(() => CategoryModel)
   updateCategory(
     @Args('input') input: UpdateCategoryInput,
-    @Args('id') id: string,
+    @Args('id', { type: () => ID }) id: string,
     @CurrentUser() user: { id: string },
   ) {
     return this.commandBus.execute(
@@ -49,7 +53,10 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => Boolean)
-  deleteCategory(@Args('id') id: string, @CurrentUser() user: { id: string }) {
+  deleteCategory(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() user: { id: string },
+  ) {
     return this.commandBus.execute(new DeleteCategoryCommand(id, user.id));
   }
 }
