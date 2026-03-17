@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -6,6 +7,7 @@ import { join } from 'path';
 import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './category/categories.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { CategoriesModule } from './category/categories.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'prisma/schema.graphql'),
       sortSchema: true,
-      context: ({ req }) => ({ req }),
+      context: ({ req }: { req: Request }) => ({ req }),
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
@@ -25,6 +27,7 @@ import { CategoriesModule } from './category/categories.module';
     PrismaModule,
     AuthModule,
     CategoriesModule,
+    AccountsModule,
   ],
   providers: [],
 })

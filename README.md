@@ -1,3 +1,10 @@
+![CI](https://github.com/AngelDaviid/FinancialTracker/actions/workflows/ci.yml/badge.svg)
+![CodeQL](https://github.com/AngelDaviid/FinancialTracker/actions/workflows/codeql.yml/badge.svg)
+![Node](https://img.shields.io/badge/node-20-green)
+![NestJS](https://img.shields.io/badge/NestJS-11-red)
+![Prisma](https://img.shields.io/badge/Prisma-7-blue)
+![pnpm](https://img.shields.io/badge/pnpm-9-orange)
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>

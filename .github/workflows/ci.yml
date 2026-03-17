@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: finance
+          POSTGRES_PASSWORD: finance123
+          POSTGRES_DB: financedb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Instalar dependencias
+        run: pnpm install
+
+      - name: Generar cliente Prisma
+        run: npx prisma generate
+        env:
+          DATABASE_URL: postgresql://finance:finance123@localhost:5432/financedb
+
+      - name: Correr migraciones
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://finance:finance123@localhost:5432/financedb
+      - name: Compilar proyecto
+        run: pnpm run build
+        env:
+          DATABASE_URL: postgresql://finance:finance123@localhost:5432/financedb
+          JWT_SECRET: ci-secret-for-testing
+          JWT_EXPIRES_IN: 7d
+      - name: Lint
+        run: pnpm run lint
+        env:
+          DATABASE_URL: postgresql://finance:finance123@localhost:5432/financedb
+          JWT_SECRET: ci-secret-for-testing
+          JWT_EXPIRES_IN: 7d

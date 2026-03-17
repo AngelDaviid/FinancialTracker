@@ -23,7 +23,7 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     const isValidate = await bcrypt.compare(input.password, user.password);
     if (!isValidate) throw new NotFoundException('Invalid Credentials');
 
-    const token = this.jwt.sign({ sub: user.id, email: user.email})
+    const token = this.jwt.sign({ sub: user.id, email: user.email });
 
     return { token, user };
   }
