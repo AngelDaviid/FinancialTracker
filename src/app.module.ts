@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -17,7 +18,7 @@ import { AccountsModule } from './accounts/accounts.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'prisma/schema.graphql'),
       sortSchema: true,
-      context: ({ req }) => ({ req }),
+      context: ({ req }: { req: Request }) => ({ req }),
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },

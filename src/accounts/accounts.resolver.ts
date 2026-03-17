@@ -43,15 +43,17 @@ export class AccountsResolver {
 
   @Query(() => NetWorthModel)
   async netWorth(@CurrentUser() user: { id: string }) {
-    const accounts = await this.queryBus.execute(new GetAccountsQuery(user.id));
+    const accounts: AccountModel[] = await this.queryBus.execute(
+      new GetAccountsQuery(user.id),
+    );
 
     const assets = accounts
-      .filter((a: any) => a.type !== AccountType.CREDIT)
-      .reduce((sum: number, a: any) => sum + a.balance, 0);
+      .filter((a) => a.type !== AccountType.CREDIT)
+      .reduce((sum: number, a) => sum + a.balance, 0);
 
     const liabilities = accounts
-      .filter((a: any) => a.type === AccountType.CREDIT)
-      .reduce((sum: number, a: any) => sum + (a.currentDebt ?? 0), 0);
+      .filter((a) => a.type === AccountType.CREDIT)
+      .reduce((sum: number, a) => sum + (a.currentDebt ?? 0), 0);
 
     return { assets, liabilities, netWorth: assets - liabilities };
   }

@@ -20,6 +20,6 @@ export class GetCategoryHandler implements IQueryHandler<GetCategoryQuery> {
       throw new ForbiddenException();
     }
 
-    return category
+    return category;
   }
 }
