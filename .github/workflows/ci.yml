@@ -52,7 +52,6 @@ jobs:
         run: npx prisma migrate deploy
         env:
           DATABASE_URL: postgresql://finance:finance123@localhost:5432/financedb
-          PRISMA_CONFIG_PATH: /dev/null
       - name: Compilar proyecto
         run: pnpm run build
         env:
