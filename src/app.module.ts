@@ -8,6 +8,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './category/categories.module';
 import { AccountsModule } from './accounts/accounts.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AccountsModule } from './accounts/accounts.module';
     AuthModule,
     CategoriesModule,
     AccountsModule,
+    TransactionsModule,
   ],
   providers: [],
 })
