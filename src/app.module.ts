@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './category/categories.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { BudgetsModel } from './budgets/budgets.model';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     CategoriesModule,
     AccountsModule,
     TransactionsModule,
+    BudgetsModel,
   ],
   providers: [],
 })
