@@ -154,7 +154,7 @@ model SavingGoal {
   name          String
   targetAmount  Float
   currentAmount Float    @default(0)
-  deadline      DateTime
+  deadline      DateTime?
   icon          String?
   color         String?
 
