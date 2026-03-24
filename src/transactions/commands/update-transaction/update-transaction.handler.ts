@@ -2,6 +2,10 @@ import { UpdateTransactionCommand } from './update-transaction.command';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { PrismaService } from '../../../../prisma/prisma.service';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+  AccountType,
+  TransactionType,
+} from '../../../../generated/prisma/enums';
 
 @CommandHandler(UpdateTransactionCommand)
 export class UpdateTransactionHandler implements ICommandHandler<UpdateTransactionCommand> {
@@ -60,21 +64,25 @@ export class UpdateTransactionHandler implements ICommandHandler<UpdateTransacti
   }
 
   private resolveBalanceUpdate(
-    accountType: string,
-    transactionType: string,
+    accountType: AccountType,
+    transactionType: TransactionType,
     amount: number,
     revert: boolean,
   ) {
     const sign = revert ? -1 : 1;
 
-    if (accountType === 'CREDIT') {
+    if (accountType === AccountType.CREDIT) {
       const delta =
-        transactionType === 'EXPENSE' ? amount * sign : -amount * sign;
-      return { balance: { increment: delta } };
+        transactionType === TransactionType.EXPENSE
+          ? amount * sign
+          : -amount * sign;
+      return { currentDebt: { increment: delta } };
     }
 
     const delta =
-      transactionType === 'EXPENSE' ? -amount * sign : amount * sign;
+      transactionType === TransactionType.EXPENSE
+        ? -amount * sign
+        : amount * sign;
     return { balance: { increment: delta } };
   }
 }

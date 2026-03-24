@@ -1,4 +1,4 @@
-import { CreateTransactionInput } from '../../dto/create-transaction.input';
+import { CreateTransactionInput } from '../../dto';
 
 export class CreateTransactionCommand {
   constructor(
