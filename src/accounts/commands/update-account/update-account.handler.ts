@@ -2,6 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateAccountCommand } from './update-account.command';
 import { PrismaService } from '../../../../prisma/prisma.service';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { AccountType } from '../../../../generated/prisma/enums';
 
 @CommandHandler(UpdateAccountCommand)
 export class UpdateAccountHandler implements ICommandHandler<UpdateAccountCommand> {
@@ -16,7 +17,11 @@ export class UpdateAccountHandler implements ICommandHandler<UpdateAccountComman
 
     return this.prisma.account.update({
       where: { id },
-      data: input,
+      data: {
+        ...input,
+        balance:
+          account.type === AccountType.CREDIT ? 0 : (account.balance ?? 0),
+      },
     });
   }
 }

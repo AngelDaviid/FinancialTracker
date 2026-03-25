@@ -8,7 +8,7 @@ export class GetBudgetsHandler implements IQueryHandler<GetBudgetsQuery> {
 
   async execute({ userId, month }: GetBudgetsQuery) {
     return this.prisma.budget.findMany({
-      where: { id: userId, month: month },
+      where: { userId, month },
       include: { category: true },
       orderBy: { category: { name: 'asc' } },
     });
