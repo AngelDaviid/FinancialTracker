@@ -8,6 +8,9 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './category/categories.module';
 import { AccountsModule } from './accounts/accounts.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import { BudgetsModel } from './budgets/budgets.model';
+import { SavingGoalModule } from './saving-goals/saving-goal.module';
 
 @Module({
   imports: [
@@ -28,6 +31,9 @@ import { AccountsModule } from './accounts/accounts.module';
     AuthModule,
     CategoriesModule,
     AccountsModule,
+    TransactionsModule,
+    BudgetsModel,
+    SavingGoalModule,
   ],
   providers: [],
 })
