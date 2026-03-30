@@ -11,6 +11,7 @@ import { AccountsModule } from './accounts/accounts.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { BudgetsModel } from './budgets/budgets.model';
 import { SavingGoalModule } from './saving-goals/saving-goal.module';
+import { ReportModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SavingGoalModule } from './saving-goals/saving-goal.module';
     TransactionsModule,
     BudgetsModel,
     SavingGoalModule,
+    ReportModule,
   ],
   providers: [],
 })
