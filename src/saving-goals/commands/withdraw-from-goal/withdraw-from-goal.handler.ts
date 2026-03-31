@@ -28,7 +28,7 @@ export class WithdrawFromGoalHandler implements ICommandHandler<WithdrawFromGoal
 
       if (goal.linkedAccount) {
         await tx.account.update({
-          where: { id: goal.linkedAccountId! },
+          where: { id: goal.linkedAccountId },
           data: { balance: { increment: amount } },
         });
       }
