@@ -1,0 +1,10 @@
+mutation UpdateCategory($id: ID!, $input: UpdateCategoryInput!) {
+    updateCategory(id: $id, input: $input) {
+        id
+        name
+        type
+        icon
+        color
+        budgetAmount
+    }
+}

@@ -1,0 +1,19 @@
+query GetSavingsGoal($id: ID!) {
+    savingsGoal(id: $id) {
+        id
+        name
+        targetAmount
+        currentAmount
+        deadline
+        icon
+        color
+        progress
+        remaining
+        isCompleted
+        linkedAccount {
+            id
+            name
+            balance
+        }
+    }
+}

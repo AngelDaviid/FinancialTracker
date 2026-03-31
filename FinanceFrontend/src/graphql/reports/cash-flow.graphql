@@ -1,0 +1,8 @@
+query CashFlow($months: Int!) {
+    cashFlow(months: $months) {
+        month
+        income
+        expenses
+        balance
+    }
+}

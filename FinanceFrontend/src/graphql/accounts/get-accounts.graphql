@@ -1,0 +1,20 @@
+query GetAccounts {
+    accounts {
+        id
+        name
+        type
+        currency
+        balance
+        color
+        icon
+        creditLimit
+        currentDebt
+        availableCredit
+        cutoffDay
+        paymentDueDay
+        interestRate
+        minimumPayment
+        createdAt
+        updatedAt
+    }
+}

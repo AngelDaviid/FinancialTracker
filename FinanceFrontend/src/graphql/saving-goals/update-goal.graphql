@@ -1,0 +1,14 @@
+mutation UpdateSavingsGoal($id: ID!, $input: UpdateGoalInput!) {
+    updateSavingGoal(id: $id, input: $input) {
+        id
+        name
+        targetAmount
+        currentAmount
+        deadline
+        icon
+        color
+        progress
+        remaining
+        isCompleted
+    }
+}

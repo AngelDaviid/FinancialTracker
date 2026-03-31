@@ -1,0 +1,26 @@
+query GetTransactions($filters: TransactionFiltersInput) {
+    transactions(filters: $filters) {
+        id
+        amount
+        description
+        type
+        date
+        notes
+        isRecurring
+        recurringInterval
+        transferToAccountId
+        account {
+            id
+            name
+            type
+        }
+        category {
+            id
+            name
+            color
+            icon
+        }
+        createdAt
+        updatedAt
+    }
+}

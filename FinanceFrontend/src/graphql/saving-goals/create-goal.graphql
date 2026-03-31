@@ -1,0 +1,19 @@
+mutation CreateSavingsGoal($input: CreateGoalInput!) {
+    createSavingsGoal(input: $input) {
+        id
+        name
+        targetAmount
+        currentAmount
+        deadline
+        icon
+        color
+        progress
+        remaining
+        isCompleted
+        linkedAccount {
+            id
+            name
+            balance
+        }
+    }
+}
