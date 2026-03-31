@@ -46,17 +46,21 @@ describe('DeleteBudgetHandler', () => {
         updatedAt: new Date(),
       };
 
-      jest.spyOn(prismaService.budget, 'findUnique').mockResolvedValue(mockBudget as any);
-      jest.spyOn(prismaService.budget, 'delete').mockResolvedValue(mockBudget as any);
+      const findUniqueSpy = jest
+        .spyOn(prismaService.budget, 'findUnique')
+        .mockResolvedValue(mockBudget);
+
+      const deleteSpy = jest
+        .spyOn(prismaService.budget, 'delete')
+        .mockResolvedValue(mockBudget);
 
       const command = new DeleteBudgetCommand(budgetId, userId);
       const result = await handler.execute(command);
 
       expect(result).toBeDefined();
-      expect(prismaService.budget.delete).toHaveBeenCalled();
+
+      expect(deleteSpy).toHaveBeenCalled();
+      expect(findUniqueSpy).toHaveBeenCalled();
     });
   });
 });
-
-
-

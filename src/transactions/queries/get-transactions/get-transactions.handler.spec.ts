@@ -57,7 +57,7 @@ describe('GetTransactionsHandler', () => {
         },
       ];
 
-      jest
+      const findManySpy = jest
         .spyOn(prismaService.transaction, 'findMany')
         .mockResolvedValue(mockTransactions as any);
 
@@ -66,7 +66,8 @@ describe('GetTransactionsHandler', () => {
 
       expect(result).toBeDefined();
       expect(result.length).toBe(2);
-      expect(prismaService.transaction.findMany).toHaveBeenCalled();
+
+      expect(findManySpy).toHaveBeenCalled();
     });
 
     it('should return empty array when no transactions found', async () => {
@@ -80,4 +81,3 @@ describe('GetTransactionsHandler', () => {
     });
   });
 });
-

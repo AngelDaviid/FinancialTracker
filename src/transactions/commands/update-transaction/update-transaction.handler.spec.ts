@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateTransactionHandler } from './update-transaction.handler';
 import { PrismaService } from '../../../../prisma/prisma.service';
 import { UpdateTransactionCommand } from './update-transaction.command';
+import { Prisma } from '../../../../generated/prisma/client';
 
 describe('UpdateTransactionHandler', () => {
   let handler: UpdateTransactionHandler;
@@ -21,17 +22,7 @@ describe('UpdateTransactionHandler', () => {
               findUnique: jest.fn(),
               update: jest.fn(),
             },
-            $transaction: jest.fn((callback: any) => {
-              return callback({
-                transaction: {
-                  findUnique: jest.fn(),
-                  update: jest.fn(),
-                },
-                account: {
-                  update: jest.fn(),
-                },
-              });
-            }),
+            $transaction: jest.fn(),
           },
         },
       ],
@@ -82,20 +73,30 @@ describe('UpdateTransactionHandler', () => {
         account: {
           update: jest.fn().mockResolvedValue({ balance: 5100 }),
         },
-      };
+      } as unknown as Prisma.TransactionClient;
 
-      jest
+      const transactionSpy = jest
         .spyOn(prismaService, '$transaction')
-        .mockImplementation((callback: any) => callback(mockTx));
+        .mockImplementation(
+          async <T>(
+            callback: (tx: Prisma.TransactionClient) => Promise<T>,
+          ): Promise<T> => {
+            return callback(mockTx);
+          },
+        );
 
-      const command = new UpdateTransactionCommand(transactionId, userId, input);
+      const command = new UpdateTransactionCommand(
+        transactionId,
+        userId,
+        input,
+      );
+
       const result = await handler.execute(command);
 
       expect(result).toBeDefined();
       expect(result.description).toBe('Updated Expense');
-      expect((prismaService.$transaction as jest.Mock)).toHaveBeenCalled();
+
+      expect(transactionSpy).toHaveBeenCalled();
     });
   });
 });
-
-

@@ -62,18 +62,22 @@ describe('UpdateAccountHandler', () => {
         deletedAt: null,
       };
 
-      jest.spyOn(prismaService.account, 'findUnique').mockResolvedValue(mockAccount as any);
-      jest.spyOn(prismaService.account, 'update').mockResolvedValue(mockAccount as any);
+      const findUniqueSpy = jest
+        .spyOn(prismaService.account, 'findUnique')
+        .mockResolvedValue(mockAccount);
+
+      const updateSpy = jest
+        .spyOn(prismaService.account, 'update')
+        .mockResolvedValue(mockAccount);
 
       const command = new UpdateAccountCommand(accountId, userId, input);
       const result = await handler.execute(command);
 
       expect(result).toBeDefined();
       expect(result.name).toBe('Updated Account');
-      expect(prismaService.account.update).toHaveBeenCalled();
+
+      expect(updateSpy).toHaveBeenCalled();
+      expect(findUniqueSpy).toHaveBeenCalled();
     });
   });
 });
-
-
-

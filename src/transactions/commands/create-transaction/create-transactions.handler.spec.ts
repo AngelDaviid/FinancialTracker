@@ -6,6 +6,7 @@ import { BadRequestException } from '@nestjs/common';
 import { RecurringInterval } from '../../models/transaction.model';
 import { TransactionType } from '../../../category/models/category.model';
 import { AccountType } from '../../../accounts/models/account.model';
+import { Prisma } from '../../../../generated/prisma/client';
 
 describe('CreateTransactionHandler', () => {
   let handler: CreateTransactionHandler;
@@ -13,6 +14,21 @@ describe('CreateTransactionHandler', () => {
 
   const userId = 'user-123';
   const accountId = 'account-123';
+
+  const mockTransaction = (
+    prismaService: PrismaService,
+    mockTx: Prisma.TransactionClient,
+  ) => {
+    return jest
+      .spyOn(prismaService, '$transaction')
+      .mockImplementation(
+        async <T>(
+          callback: (tx: Prisma.TransactionClient) => Promise<T>,
+        ): Promise<T> => {
+          return callback(mockTx);
+        },
+      );
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,17 +44,7 @@ describe('CreateTransactionHandler', () => {
             transaction: {
               create: jest.fn(),
             },
-            $transaction: jest.fn((callback: any) => {
-              return callback({
-                account: {
-                  findUnique: jest.fn(),
-                  update: jest.fn(),
-                },
-                transaction: {
-                  create: jest.fn(),
-                },
-              });
-            }),
+            $transaction: jest.fn(),
           },
         },
       ],
@@ -87,7 +93,7 @@ describe('CreateTransactionHandler', () => {
         deletedAt: null,
       };
 
-      const mockTransaction = {
+      const mockCreatedTransaction = {
         id: 'tx-123',
         ...input,
         date: new Date(input.date),
@@ -105,20 +111,18 @@ describe('CreateTransactionHandler', () => {
           update: jest.fn().mockResolvedValue(mockAccount),
         },
         transaction: {
-          create: jest.fn().mockResolvedValue(mockTransaction),
+          create: jest.fn().mockResolvedValue(mockCreatedTransaction),
         },
-      };
+      } as unknown as Prisma.TransactionClient;
 
-      jest
-        .spyOn(prismaService, '$transaction')
-        .mockImplementation((callback: any) => callback(mockTx));
+      const transactionSpy = mockTransaction(prismaService, mockTx);
 
       const command = new CreateTransactionCommand(userId, input);
       const result = await handler.execute(command);
 
       expect(result).toBeDefined();
       expect(result.id).toBe('tx-123');
-      expect((prismaService.$transaction as jest.Mock)).toHaveBeenCalled();
+      expect(transactionSpy).toHaveBeenCalled();
     });
 
     it('should throw error if account not found', async () => {
@@ -143,11 +147,9 @@ describe('CreateTransactionHandler', () => {
         transaction: {
           create: jest.fn(),
         },
-      };
+      } as unknown as Prisma.TransactionClient;
 
-      jest
-        .spyOn(prismaService, '$transaction')
-        .mockImplementation((callback: any) => callback(mockTx));
+      mockTransaction(prismaService, mockTx);
 
       const command = new CreateTransactionCommand(userId, input);
 
@@ -198,11 +200,9 @@ describe('CreateTransactionHandler', () => {
         transaction: {
           create: jest.fn(),
         },
-      };
+      } as unknown as Prisma.TransactionClient;
 
-      jest
-        .spyOn(prismaService, '$transaction')
-        .mockImplementation((callback: any) => callback(mockTx));
+      mockTransaction(prismaService, mockTx);
 
       const command = new CreateTransactionCommand(userId, input);
 
@@ -245,7 +245,7 @@ describe('CreateTransactionHandler', () => {
         deletedAt: null,
       };
 
-      const mockTransaction = {
+      const mockCreatedTransaction = {
         id: 'tx-124',
         ...input,
         date: new Date(input.date),
@@ -263,21 +263,18 @@ describe('CreateTransactionHandler', () => {
           update: jest.fn().mockResolvedValue(mockAccount),
         },
         transaction: {
-          create: jest.fn().mockResolvedValue(mockTransaction),
+          create: jest.fn().mockResolvedValue(mockCreatedTransaction),
         },
-      };
+      } as unknown as Prisma.TransactionClient;
 
-      jest
-        .spyOn(prismaService, '$transaction')
-        .mockImplementation((callback: any) => callback(mockTx));
+      const transactionSpy = mockTransaction(prismaService, mockTx);
 
       const command = new CreateTransactionCommand(userId, input);
       const result = await handler.execute(command);
 
       expect(result).toBeDefined();
       expect(result.id).toBe('tx-124');
-      expect((prismaService.$transaction as jest.Mock)).toHaveBeenCalled();
+      expect(transactionSpy).toHaveBeenCalled();
     });
   });
 });
-

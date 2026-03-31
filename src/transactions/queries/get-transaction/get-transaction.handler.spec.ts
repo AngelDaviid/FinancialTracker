@@ -59,8 +59,8 @@ describe('GetTransactionHandler', () => {
       expect(result).toBeDefined();
       expect(result.id).toBe(transactionId);
       expect(result.amount).toBe(100);
-      expect(prismaService.transaction.findUnique).toHaveBeenCalled();
+      const spy = jest.spyOn(prismaService.transaction, 'findUnique');
+      expect(spy).toHaveBeenCalled();
     });
   });
 });
-

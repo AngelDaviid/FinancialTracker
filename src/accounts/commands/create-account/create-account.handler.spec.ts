@@ -59,7 +59,9 @@ describe('CreateAccountHandler', () => {
         deletedAt: null,
       };
 
-      jest.spyOn(prismaService.account, 'create').mockResolvedValue(mockAccount as any);
+      const createSpy = jest
+        .spyOn(prismaService.account, 'create')
+        .mockResolvedValue(mockAccount);
 
       const command = new CreateAccountCommand(userId, input);
       const result = await handler.execute(command);
@@ -67,9 +69,8 @@ describe('CreateAccountHandler', () => {
       expect(result).toBeDefined();
       expect(result.id).toBe('account-123');
       expect(result.name).toBe('My Bank Account');
-      expect(prismaService.account.create).toHaveBeenCalled();
+
+      expect(createSpy).toHaveBeenCalled();
     });
   });
 });
-
-

@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SetBudgetHandler } from './set-budget.handler';
 import { PrismaService } from '../../../../prisma/prisma.service';
 import { SetBudgetCommand } from './set-budget.command';
+import { TransactionType } from '../../../category/models/category.model';
 
 describe('SetBudgetHandler', () => {
   let handler: SetBudgetHandler;
@@ -47,8 +48,11 @@ describe('SetBudgetHandler', () => {
       const mockCategory = {
         id: categoryId,
         name: 'Food',
-        type: 'EXPENSE',
+        type: TransactionType.EXPENSE,
         userId,
+        icon: null,
+        color: null,
+        budgetAmount: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -61,17 +65,22 @@ describe('SetBudgetHandler', () => {
         updatedAt: new Date(),
       };
 
-      jest.spyOn(prismaService.category, 'findUnique').mockResolvedValue(mockCategory as any);
-      jest.spyOn(prismaService.budget, 'upsert').mockResolvedValue(mockBudget as any);
+      const findUniqueSpy = jest
+        .spyOn(prismaService.category, 'findUnique')
+        .mockResolvedValue(mockCategory);
+
+      const upsertSpy = jest
+        .spyOn(prismaService.budget, 'upsert')
+        .mockResolvedValue(mockBudget);
 
       const command = new SetBudgetCommand(userId, input);
       const result = await handler.execute(command);
 
       expect(result).toBeDefined();
       expect(result.amount).toBe(500000);
-      expect(prismaService.budget.upsert).toHaveBeenCalled();
+
+      expect(upsertSpy).toHaveBeenCalled();
+      expect(findUniqueSpy).toHaveBeenCalled();
     });
   });
 });
-
-

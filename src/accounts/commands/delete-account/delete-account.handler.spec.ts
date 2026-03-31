@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DeleteAccountHandler } from './delete-account.handler';
 import { PrismaService } from '../../../../prisma/prisma.service';
 import { DeleteAccountCommand } from './delete-account.command';
+import { AccountType } from '../../models/account.model';
 
 describe('DeleteAccountHandler', () => {
   let handler: DeleteAccountHandler;
@@ -39,7 +40,7 @@ describe('DeleteAccountHandler', () => {
       const mockAccount = {
         id: accountId,
         name: 'Test Account',
-        type: 'DEBIT',
+        type: AccountType.DEBIT,
         currency: 'COP',
         balance: 5000,
         color: '#00FF00',
@@ -56,17 +57,21 @@ describe('DeleteAccountHandler', () => {
         deletedAt: null,
       };
 
-      jest.spyOn(prismaService.account, 'findUnique').mockResolvedValue(mockAccount as any);
-      jest.spyOn(prismaService.account, 'update').mockResolvedValue(mockAccount as any);
+      const findUniqueSpy = jest
+        .spyOn(prismaService.account, 'findUnique')
+        .mockResolvedValue(mockAccount);
 
-      const command = new DeleteAccountCommand('account-123', userId);
+      const updateSpy = jest
+        .spyOn(prismaService.account, 'update')
+        .mockResolvedValue(mockAccount);
+
+      const command = new DeleteAccountCommand(accountId, userId);
       const result = await handler.execute(command);
 
       expect(result).toBeDefined();
-      expect(prismaService.account.update).toHaveBeenCalled();
+
+      expect(updateSpy).toHaveBeenCalled();
+      expect(findUniqueSpy).toHaveBeenCalled();
     });
   });
 });
-
-
-

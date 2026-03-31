@@ -58,7 +58,9 @@ describe('RegisterHandler', () => {
       };
 
       jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(null);
-      jest.spyOn(prismaService.user, 'create').mockResolvedValue(mockUser as any);
+      jest
+        .spyOn(prismaService.user, 'create')
+        .mockResolvedValue(mockUser as any);
       jest.spyOn(jwtService, 'sign').mockReturnValue('jwt_token' as any);
 
       const command = new RegisterCommand(input);
@@ -69,5 +71,3 @@ describe('RegisterHandler', () => {
     });
   });
 });
-
-

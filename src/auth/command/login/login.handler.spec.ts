@@ -58,7 +58,9 @@ describe('LoginHandler', () => {
         updatedAt: new Date(),
       };
 
-      jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(mockUser as any);
+      jest
+        .spyOn(prismaService.user, 'findUnique')
+        .mockResolvedValue(mockUser as any);
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
       jest.spyOn(jwtService, 'sign').mockReturnValue('jwt_token' as any);
 
@@ -70,6 +72,3 @@ describe('LoginHandler', () => {
     });
   });
 });
-
-
-
