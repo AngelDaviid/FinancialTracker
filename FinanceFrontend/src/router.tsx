@@ -13,15 +13,21 @@ function PublicRoute() {
 
 export const router = createBrowserRouter([
   {
-    element: <PublicRoute/>
+    element: <PublicRoute />,
     children: [
       {
         path: '/login',
-        lazy: () => import('./pages/Login/login-page').then(m => ({ Component: m.default }))
+        lazy: () =>
+          import('./pages/Login/login-page').then((m) => ({
+            Component: m.LoginPage,
+          })),
       },
       {
         path: '/register',
-        lazy: () => import('./pages/Register/register-page').then(m => ({ Component: m.default }))
+        lazy: () =>
+          import('./pages/Register/register-page').then((m) => ({
+            Component: m.RegisterPage,
+          })),
       },
     ],
   },
@@ -33,30 +39,48 @@ export const router = createBrowserRouter([
         path: '/',
         element: <Navigate to="/dashboard" replace />,
       },
-      {
+      /*{
         path: '/dashboard',
-        lazy: () => import('./pages/Dashboard/dashboard-page').then(m => ({ Component: m.default })),
+        lazy: () =>
+          import('./pages/Dashboard/dashboard-page').then((m) => ({
+            Component: m.default,
+          })),
       },
       {
         path: '/accounts',
-        lazy: () => import('./pages/Accounts/accounts-page').then(m => ({ Component: m.default })),
+        lazy: () =>
+          import('./pages/Accounts/accounts-page').then((m) => ({
+            Component: m.default,
+          })),
       },
       {
         path: '/transactions',
-        lazy: () => import('./pages/Transactions/transactions-page').then(m => ({ Component: m.default })),
+        lazy: () =>
+          import('./pages/Transactions/transactions-page').then((m) => ({
+            Component: m.default,
+          })),
       },
       {
         path: '/budgets',
-        lazy: () => import('./pages/Budgets/budgets-page').then(m => ({ Component: m.default })),
+        lazy: () =>
+          import('./pages/Budgets/budgets-page').then((m) => ({
+            Component: m.default,
+          })),
       },
       {
         path: '/goals',
-        lazy: () => import('./pages/Goals/goals-page').then(m => ({ Component: m.default })),
+        lazy: () =>
+          import('./pages/Goals/goals-page').then((m) => ({
+            Component: m.default,
+          })),
       },
       {
         path: '/reports',
-        lazy: () => import('./pages/Reports/reports-page').then(m => ({ Component: m.default })),
-      },
+        lazy: () =>
+          import('./pages/Reports/reports-page').then((m) => ({
+            Component: m.default,
+          })),
+      },*/
     ],
   },
 
@@ -64,4 +88,4 @@ export const router = createBrowserRouter([
     path: '*',
     element: <Navigate to="/dashboard" replace />,
   },
-])
+]);

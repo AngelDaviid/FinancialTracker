@@ -16,6 +16,15 @@ dist
 dist-ssr
 *.local
 
+# Dependencies
+node_modules/
+
+# Generated
+src/generated/
+
+# Build
+dist/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
