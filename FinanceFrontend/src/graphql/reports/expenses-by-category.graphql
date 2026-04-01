@@ -1,0 +1,10 @@
+query ExpensesByCategory($month: String!) {
+    expensesByCategory(month: $month) {
+        categoryName
+        categoryColor
+        categoryIcon
+        amount
+        percentage
+        transactionCount
+    }
+}

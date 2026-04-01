@@ -1,0 +1,7 @@
+query GetNetWorth {
+    netWorth {
+        assets
+        liabilities
+        netWorth
+    }
+}

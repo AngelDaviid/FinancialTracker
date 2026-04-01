@@ -1,0 +1,12 @@
+query GetCategories {
+    categories {
+        id
+        name
+        type
+        icon
+        color
+        budgetAmount
+        createdAt
+        updatedAt
+    }
+}

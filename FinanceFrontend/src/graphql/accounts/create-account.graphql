@@ -1,0 +1,18 @@
+mutation CreateAccount($input: CreateAccountInput!) {
+    createAccount(input: $input) {
+        id
+        name
+        type
+        currency
+        balance
+        color
+        icon
+        creditLimit
+        currentDebt
+        availableCredit
+        cutoffDay
+        paymentDueDay
+        interestRate
+        minimumPayment
+    }
+}

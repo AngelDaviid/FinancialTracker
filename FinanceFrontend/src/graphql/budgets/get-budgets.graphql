@@ -1,0 +1,15 @@
+query GetBudgets($month: String!) {
+    budgets(month: $month) {
+        id
+        month
+        amount
+        category {
+            id
+            name
+            color
+            icon
+        }
+        createdAt
+        updatedAt
+    }
+}

@@ -1,0 +1,9 @@
+query MonthlyReport($month: String!) {
+    monthlyReport(month: $month) {
+        month
+        totalIncome
+        totalExpenses
+        balance
+        savingRate
+    }
+}
