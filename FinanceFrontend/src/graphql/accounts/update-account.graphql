@@ -1,0 +1,14 @@
+mutation UpdateAccount($id: ID!, $input: UpdateAccountInput!) {
+    updateAccount(id: $id, input: $input) {
+        id
+        name
+        type
+        currency
+        balance
+        color
+        icon
+        creditLimit
+        currentDebt
+        availableCredit
+    }
+}

@@ -1,0 +1,15 @@
+mutation AddToSavingsGoal($input: AddToGoalInput!) {
+    addToSavingsGoal(input: $input) {
+        id
+        name
+        currentAmount
+        progress
+        remaining
+        isCompleted
+        linkedAccount {
+            id
+            name
+            balance
+        }
+    }
+}

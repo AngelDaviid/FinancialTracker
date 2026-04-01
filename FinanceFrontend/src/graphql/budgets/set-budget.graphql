@@ -1,0 +1,13 @@
+mutation SetBudget($input: SetBudgetInput!) {
+    setBudget(input: $input) {
+        id
+        month
+        amount
+        category {
+            id
+            name
+            color
+            icon
+        }
+    }
+}

@@ -29,7 +29,7 @@ export class AddToGoalHandler implements ICommandHandler<AddToGoalCommand> {
         }
 
         await tx.account.update({
-          where: { id: goal.linkedAccountId! },
+          where: { id: goal.linkedAccountId },
           data: { balance: { increment: -input.amount } },
         });
 

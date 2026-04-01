@@ -1,0 +1,21 @@
+mutation UpdateTransaction($id: ID!, $input: UpdateTransactionInput!) {
+    updateTransaction(id: $id, input: $input) {
+        id
+        amount
+        description
+        type
+        date
+        notes
+        account {
+            id
+            name
+            balance
+            currentDebt
+            availableCredit
+        }
+        category {
+            id
+            name
+        }
+    }
+}

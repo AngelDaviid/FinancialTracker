@@ -1,0 +1,27 @@
+query GetTransaction($id: ID!) {
+    transaction(id: $id) {
+        id
+        amount
+        description
+        type
+        date
+        notes
+        isRecurring
+        recurringInterval
+        account {
+            id
+            name
+            type
+            balance
+            currentDebt
+            availableCredit
+        }
+        category {
+            id
+            name
+            color
+            icon
+        }
+        createdAt
+    }
+}

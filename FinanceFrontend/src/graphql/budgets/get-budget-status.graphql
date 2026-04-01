@@ -1,0 +1,15 @@
+query GetBudgetStatus($month: String!) {
+    budgetStatus(month: $month) {
+        category {
+            id
+            name
+            color
+            icon
+        }
+        budgetAmount
+        spent
+        remaining
+        percentage
+        isOverBudget
+    }
+}

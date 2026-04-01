@@ -23,6 +23,14 @@ export class CreateTransactionHandler implements ICommandHandler<CreateTransacti
       if (account.userId !== userId)
         throw new BadRequestException('No Authorized');
 
+      const category = input.categoryId
+        ? await tx.category.findUnique({ where: { id: input.categoryId } })
+        : null;
+
+      if (input.categoryId && !category) {
+        throw new BadRequestException('Category not found');
+      }
+
       const balanceUpdate = this.resolveBalanceUpdate(
         account.type,
         input.type,
@@ -42,7 +50,7 @@ export class CreateTransactionHandler implements ICommandHandler<CreateTransacti
             recurringInterval: input.recurringInterval,
             transferToAccountId: input.transferToAccountId,
             accountId: input.accountId,
-            categoryId: input.categoryId,
+            categoryId: category?.id ?? null,
             userId,
           },
           include: { account: true, category: true },

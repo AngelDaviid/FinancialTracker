@@ -1,0 +1,3 @@
+mutation DeleteSavingsGoal($id: ID!) {
+    deleteSavingGoal(id: $id)
+}

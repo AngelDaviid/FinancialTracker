@@ -1,0 +1,21 @@
+query GetSavingsGoals {
+    savingsGoals {
+        id
+        name
+        targetAmount
+        currentAmount
+        deadline
+        icon
+        color
+        progress
+        remaining
+        isCompleted
+        linkedAccount {
+            id
+            name
+            balance
+        }
+        createdAt
+        updatedAt
+    }
+}

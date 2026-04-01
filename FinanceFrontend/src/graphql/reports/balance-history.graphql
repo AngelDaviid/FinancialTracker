@@ -1,0 +1,8 @@
+query BalanceHistory($months: Int!) {
+    balanceHistory(months: $months) {
+        month
+        assets
+        liabilities
+        netWorth
+    }
+}
