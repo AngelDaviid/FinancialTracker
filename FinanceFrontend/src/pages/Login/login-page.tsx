@@ -1,36 +1,80 @@
 import { Link } from 'react-router-dom';
+import { useLogin } from './hook';
+import { useForm } from 'react-hook-form';
+import { InputHandler } from '../../components/Inputs';
+import { Receipt } from 'lucide-react';
+import { CustomButton } from '../../components/Buttons';
+
+interface LoginFormValues {
+  email: string;
+  password: string;
+}
 
 const LoginPage = () => {
-  return (
-    <div className="w-screen h-screen bg-[#3489db] flex items-center justify-center">
-      <div className="w-100 h-120 bg-white space-y-2 flex flex-col justify-center items-center">
-        <h1>Welcome to Finance Tracker</h1>
-        <div className="flex flex-col gap-2 items-center justify-center w-full">
-          <input
-            type="text"
-            placeholder={'Email'}
-            className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-80 px-3 py-2.5 shadow-xs placeholder:text-body"
-            required
-          />
-          <input
-            type="text"
-            placeholder={'Password'}
-            className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-80 px-3 py-2.5 shadow-xs placeholder:text-body"
-          />
-        </div>
-        <button
-          type={'submit'}
-          className="p-2 w-25 mt-10 cursor-pointer bg-gray-700 rounded text-white"
-        >
-          LogIn
-        </button>
+  const { handleLogin, loading } = useLogin();
 
-        <p>
-          You don't have an account? register now{' '}
-          <a>
-            <Link to="/register" style={{color: 'blue', textDecoration: 'underline'}}>Register</Link>
-          </a>
-        </p>
+  const { control, handleSubmit } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = async (values: LoginFormValues) => {
+    await handleLogin(values);
+  };
+
+  return (
+    <div className="w-screen min-h-screen bg-[#151613] flex items-center justify-center p-4">
+      <div className="relative flex flex-col md:flex-row">
+        <div className="w-80 md:w-100 h-120 p-8 rounded-t-2xl md:rounded-l-2xl md:rounded-tr-none bg-[#004f39] flex justify-center items-center">
+          <h1 className="text-3xl md:text-5xl font-bold text-[#fffaca] leading-tight text-center tracking-tight">
+            Control your money. <br />
+            <span className="text-[#8cb79b]">Control your life.</span>
+          </h1>
+        </div>
+
+        <div className="w-80 md:w-100 h-120 bg-[#fffaca] rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none space-y-4 flex flex-col justify-center items-center p-6">
+          <div className="flex flex-col gap-3 items-center justify-center w-full">
+            <InputHandler
+              name="email"
+              control={control}
+              type="email"
+              label="Email"
+            />
+
+            <InputHandler
+              name="password"
+              control={control}
+              type="password"
+              label="Password"
+            />
+          </div>
+
+          <CustomButton
+            onClick={handleSubmit(onSubmit)}
+            disabled={loading}
+            variant={'primary'}
+          >
+            {loading ? 'Loading...' : 'LogIn'}
+          </CustomButton>
+
+          <p className="text-[#004f39] text-sm">
+            You don't have an account?{' '}
+            <Link
+              to="/register"
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              Register
+            </Link>
+          </p>
+        </div>
+
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 z-10">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-[#004f39] bg-[#fffaca] flex justify-center items-center shadow-lg">
+            <Receipt size={32} className="md:w-10 md:h-10 text-[#151613]" />
+          </div>
+        </div>
       </div>
     </div>
   );
