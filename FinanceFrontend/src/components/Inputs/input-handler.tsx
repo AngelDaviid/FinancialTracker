@@ -2,6 +2,7 @@ import {
   type Control,
   type FieldValues,
   type Path,
+  type RegisterOptions,
   useController,
 } from 'react-hook-form';
 import { InputErrorHandler } from './input-error-handler.tsx';
@@ -15,6 +16,7 @@ interface InputHandlerProps<T extends FieldValues> {
   placeholder?: string;
   label?: string;
   className?: string;
+  rules?: RegisterOptions<T>;
 }
 
 const InputHandler = <T extends FieldValues>({
@@ -24,13 +26,14 @@ const InputHandler = <T extends FieldValues>({
   placeholder,
   label,
   className,
+  rules: externalRules,
 }: InputHandlerProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === 'password';
   const isEmail = type === 'email';
   const inputType = isPassword ? (showPassword ? 'text' : 'password') : type;
 
-  const rules = {
+  const internalRules = {
     required: `${label ?? name} is required`,
     ...(isEmail && {
       pattern: {
@@ -43,7 +46,7 @@ const InputHandler = <T extends FieldValues>({
   const { field, fieldState } = useController({
     name,
     control,
-    rules,
+    rules: { ...internalRules, ...externalRules },
   });
 
   return (

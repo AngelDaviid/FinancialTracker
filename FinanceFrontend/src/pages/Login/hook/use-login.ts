@@ -30,7 +30,7 @@ const useLogin = () => {
 
         setTimeout(() => {
           navigate('/dashboard');
-        }, 1000);
+        }, 500);
       }
     } catch (err) {
       if (err instanceof ApolloError) {

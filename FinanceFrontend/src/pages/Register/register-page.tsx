@@ -9,16 +9,18 @@ interface RegisterFormProps {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 const RegisterPage = () => {
   const { handleRegister, loading } = useRegister();
 
-  const { control, handleSubmit } = useForm<RegisterFormProps>({
+  const { control, handleSubmit, getValues } = useForm<RegisterFormProps>({
     defaultValues: {
       name: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
@@ -57,6 +59,24 @@ const RegisterPage = () => {
               control={control}
               type="password"
               label="Password"
+              rules={{
+                minLength: {
+                  value: 8,
+                  message:
+                    'Password must be longer than or equal to 8 characters',
+                },
+              }}
+            />
+
+            <InputHandler
+              name="confirmPassword"
+              control={control}
+              type="password"
+              label="Confirm Password"
+              rules={{
+                validate: (value) =>
+                  value === getValues('password') || 'Passwords do not match',
+              }}
             />
           </div>
 
