@@ -1,26 +1,22 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  ApolloLink,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
-const httpLink = new HttpLink({
-  uri: import.meta.env.VITE_API_URL,
-});
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('authToken');
 
-const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('token');
-  operation.setContext(({ headers = {} }) => ({
+  return {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
     },
-  }));
-  return forward(operation);
+  };
+});
+
+const httpLink = new HttpLink({
+  uri: 'http://localhost:3000/graphql',
 });
 
 export const client = new ApolloClient({
-  link: ApolloLink.from([authLink, httpLink]),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
